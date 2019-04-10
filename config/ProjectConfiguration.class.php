@@ -1,12 +1,11 @@
 <?php
 
-require_once __DIR__.'/../vendor/lexpress/symfony1/lib/autoload/sfCoreAutoload.class.php';
-sfCoreAutoload::register();
+require_once __DIR__.'/../vendor/autoload.php';
 
 class ProjectConfiguration extends sfProjectConfiguration
 {
-  public function setup()
-  {
-    $this->enablePlugins('sfDoctrinePlugin');
-  }
+    public function setup()
+    {
+        $this->enablePlugins('sfDoctrinePlugin');
+    }
 }
