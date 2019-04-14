@@ -1,0 +1,4 @@
+config/services.yml:
+    class: MiguelAlcaino\DependencyInjection\ContainerConfigHandler
+    param:
+        base_class: MiguelAlcaino\DependencyInjection\SymfonyContainer

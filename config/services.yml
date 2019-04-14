@@ -1,4 +1,13 @@
-all:
-    services:
-        logger:
-            class: MiguelAlcaino\Service\Logger
+#all:
+#    services:
+#        logger:
+#            class: MiguelAlcaino\Service\Logger
+
+services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        public: true
+
+    MiguelAlcaino\:
+        resource: '../src/*'
+        exclude: '../src/{Action,DependencyInjection}'
