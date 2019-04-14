@@ -32,7 +32,7 @@ EOF;
     protected function execute($arguments = [], $options = [])
     {
         $this->log('HOLA');
-        $logger = $this->getService('logger');
+        $logger = $this->getService(\MiguelAlcaino\Service\Logger::class);
 
         $message = $logger->log('CHAOOOOOOOOO');
 
