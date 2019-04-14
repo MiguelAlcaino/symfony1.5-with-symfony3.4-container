@@ -1,0 +1,4 @@
+all:
+    services:
+        logger:
+            class: MiguelAlcaino\Service\Logger
