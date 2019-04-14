@@ -1,6 +1,8 @@
 <?php
 
 use MiguelAlcaino\Action\BaseAction;
+use MiguelAlcaino\Service\Logger;
+use MiguelAlcaino\Service\Mailer;
 
 /**
  * job actions.
@@ -13,15 +15,14 @@ use MiguelAlcaino\Action\BaseAction;
 class jobActions extends BaseAction
 {
     /**
-     * Executes index action
+     * @param sfWebRequest $request
+     * @param Logger       $logger
      *
-     * @param sfRequest $request A request object
+     * @return string
      */
-    public function executeIndex(sfWebRequest $request)
+    public function executeIndex(sfWebRequest $request, Logger $logger, Mailer $mailer)
     {
-        $logger = $this->getService(\MiguelAlcaino\Service\Logger::class);
-
-        $this->getResponse()->setContent(json_encode(['hola' => 'pianola', 'logger' => $logger->log('HOLANDAQUETALCA')]));
+        $this->getResponse()->setContent(json_encode(['message' => 'hello', 'logger' => $logger->log('FROM LOGGER'), 'mailer' => $mailer->send('mao@medicuja.com','Hello Miguel')]));
 
         return sfView::NONE;
     }
