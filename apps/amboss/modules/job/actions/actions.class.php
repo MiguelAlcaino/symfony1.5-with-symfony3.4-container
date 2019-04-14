@@ -1,5 +1,7 @@
 <?php
 
+use MiguelAlcaino\Action\BaseAction;
+
 /**
  * job actions.
  *
@@ -8,7 +10,7 @@
  * @author     Your name here
  * @version    SVN: $Id$
  */
-class jobActions extends sfActions
+class jobActions extends BaseAction
 {
     /**
      * Executes index action
