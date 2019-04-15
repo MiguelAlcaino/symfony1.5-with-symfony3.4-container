@@ -3,21 +3,34 @@
 namespace MiguelAlcaino\DependencyInjection;
 
 use sfConfig;
+use sfEventDispatcher;
+use sfFormatter;
 use sfYamlConfigHandler;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Yaml\Yaml;
 
 class ContainerConfigHandler extends sfYamlConfigHandler
 {
     public function execute($configFiles)
     {
+        $config            = $this->convertSymfony1ServicesToSymfony3($configFiles);
+        $dumpedYaml        = Yaml::dump($config);
+        $cacheDir          = sfConfig::get('sf_cache_dir');
+        $convertedFileName = 'services_converted_to_symfony3.yml';
+        file_put_contents($cacheDir . '/' . $convertedFileName, $dumpedYaml);
+
         $class = sfConfig::get('sf_app') . '_' . sfConfig::get('sf_environment') . 'ServiceContainer';
 
         $container = new ContainerBuilder();
-        $loader    = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../'));
-        $loader->load('config/services.yml');
+        $loader    = new YamlFileLoader($container, new FileLocator($cacheDir));
+        $loader->load($convertedFileName);
+
+        # Creating fake Symfony1 services. They are replace on runtime in \sfCommandApplicationTask::getServiceContainer and \sfContext::getServiceContainer
+        $container->register('sf_event_dispatcher', sfEventDispatcher::class);
+        $container->register('sf_formatter', sfFormatter::class);
 
         $container->compile();
 
@@ -41,5 +54,18 @@ class ContainerConfigHandler extends sfYamlConfigHandler
         );
 
         return $retval;
+    }
+
+    /**
+     * @param array $configFiles
+     *
+     * @return array
+     */
+    private function convertSymfony1ServicesToSymfony3(array $configFiles)
+    {
+        $config = static::parseYamls($configFiles);
+        $config = static::flattenConfigurationWithEnvironment($config);
+
+        return $config;
     }
 }

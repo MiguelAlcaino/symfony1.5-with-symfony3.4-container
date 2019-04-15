@@ -1,5 +1,7 @@
 <?php
 
+use MiguelAlcaino\Service\Logger;
+
 class containerTestTask extends sfBaseTask
 {
     protected function configure()
@@ -32,7 +34,8 @@ EOF;
     protected function execute($arguments = [], $options = [])
     {
         $this->log('HOLA');
-        $logger = $this->getService(\MiguelAlcaino\Service\Logger::class);
+        $logger          = $this->getService(Logger::class);
+        $eventDispatcher = $this->getService('sf_event_dispatcher');
 
         $message = $logger->log('CHAOOOOOOOOO');
 
